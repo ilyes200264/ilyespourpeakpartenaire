@@ -11,7 +11,22 @@ export default function HomePage() {
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.play().catch(console.error)
+      const video = videoRef.current
+
+      // Essayer de jouer la vidéo
+      const playPromise = video.play()
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            console.log("Video is playing")
+          })
+          .catch((error) => {
+            console.log("Video autoplay failed:", error)
+            // La vidéo ne peut pas être jouée automatiquement
+            // Le fallback background sera visible
+          })
+      }
     }
   }, [])
 
@@ -58,9 +73,38 @@ export default function HomePage() {
 
       {/* Hero Section with Video Background */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" autoPlay muted loop playsInline>
+        {/* Fallback background image */}
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('/placeholder.svg?height=1080&width=1920&text=Peak+Performance+Auto')`,
+          }}
+        ></div>
+
+        {/* Video background */}
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          onError={(e) => {
+            console.log("Video failed to load, using fallback background")
+            e.currentTarget.style.display = "none"
+          }}
+          onLoadStart={() => {
+            console.log("Video loading started")
+          }}
+          onCanPlay={() => {
+            console.log("Video can play")
+          }}
+        >
           <source src="/videos/peak-performance-bg.mov" type="video/mp4" />
+          <source src="/videos/peak-performance-bg.webm" type="video/webm" />
+          Votre navigateur ne supporte pas la lecture vidéo.
         </video>
+
         <div className="absolute inset-0 bg-black/50"></div>
 
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
