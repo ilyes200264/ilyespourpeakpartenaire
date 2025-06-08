@@ -3,11 +3,27 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Phone, MapPin, Clock, Wrench, Car, Gauge, Settings, Zap, Shield, Award, Users, Calendar } from "lucide-react"
-import { useEffect, useRef } from "react"
+import {
+  Phone,
+  MapPin,
+  Clock,
+  Wrench,
+  Car,
+  Gauge,
+  Settings,
+  Zap,
+  Shield,
+  Award,
+  Users,
+  Calendar,
+  Menu,
+  X,
+} from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 
 export default function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     if (videoRef.current) {
@@ -33,10 +49,12 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-sm border-b border-gray-800">
-        <div className="container mx-auto px-4 py-4">
+      <header className="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-sm border-b border-gray-800">
+        <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-white">Peak Performance Auto</div>
+            <div className="text-xl md:text-2xl font-bold text-white">Peak Performance Auto</div>
+
+            {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
               <button
                 onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
@@ -63,11 +81,66 @@ export default function HomePage() {
                 Contact
               </button>
             </nav>
-            <Button className="bg-red-600 hover:bg-red-700">
+
+            {/* Desktop CTA Button */}
+            <Button className="hidden md:flex bg-red-600 hover:bg-red-700">
               <Calendar className="w-4 h-4 mr-2" />
               Rendez-vous
             </Button>
+
+            {/* Mobile Menu Button */}
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden text-white p-2">
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
           </div>
+
+          {/* Mobile Navigation */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 border-t border-gray-700">
+              <nav className="flex flex-col space-y-4 pt-4">
+                <button
+                  onClick={() => {
+                    document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className="text-white hover:text-red-500 transition-colors text-left py-2"
+                >
+                  Services
+                </button>
+                <button
+                  onClick={() => {
+                    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className="text-white hover:text-red-500 transition-colors text-left py-2"
+                >
+                  À Propos
+                </button>
+                <button
+                  onClick={() => {
+                    document.getElementById("team")?.scrollIntoView({ behavior: "smooth" })
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className="text-white hover:text-red-500 transition-colors text-left py-2"
+                >
+                  Équipe
+                </button>
+                <button
+                  onClick={() => {
+                    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className="text-white hover:text-red-500 transition-colors text-left py-2"
+                >
+                  Contact
+                </button>
+                <Button className="bg-red-600 hover:bg-red-700 w-full mt-4">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Rendez-vous
+                </Button>
+              </nav>
+            </div>
+          )}
         </div>
       </header>
 
@@ -81,10 +154,10 @@ export default function HomePage() {
           }}
         ></div>
 
-        {/* Video background */}
+        {/* Video background - hidden on small mobile for performance */}
         <video
           ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover hidden sm:block"
           autoPlay
           muted
           loop
@@ -104,24 +177,29 @@ export default function HomePage() {
           Votre navigateur ne supporte pas la lecture vidéo.
         </video>
 
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
 
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-          <Badge className="mb-4 bg-red-600 text-white">Service de Classe Mondiale</Badge>
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">Peak Performance Auto</h1>
-          <p className="text-xl md:text-2xl mb-8 text-gray-200 max-w-3xl mx-auto">
+          <Badge className="mb-4 bg-red-600 text-white text-sm">Service de Classe Mondiale</Badge>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight">
+            Peak Performance Auto
+          </h1>
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-gray-200 max-w-3xl mx-auto px-2">
             Garage Peak Performance Auto offrant une gamme complète de services: mécanique générale, carrosserie,
             entretien, pneus, alignement et plus! Qualité et satisfaction garanties.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-red-600 hover:bg-red-700 text-lg px-8 py-3">
-              <Phone className="w-5 h-5 mr-2" />
+          <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center px-4">
+            <Button
+              size="lg"
+              className="bg-red-600 hover:bg-red-700 text-base md:text-lg px-6 md:px-8 py-3 md:py-4 w-full sm:w-auto"
+            >
+              <Phone className="w-4 h-4 md:w-5 md:h-5 mr-2" />
               (438) 227-5550
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="text-black bg-white border-white hover:bg-gray-100 hover:text-black text-lg px-8 py-3"
+              className="text-black bg-white border-white hover:bg-gray-100 hover:text-black text-base md:text-lg px-6 md:px-8 py-3 md:py-4 w-full sm:w-auto"
               onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth" })}
             >
               Nos Services
@@ -131,40 +209,40 @@ export default function HomePage() {
       </section>
 
       {/* Contact Info Bar */}
-      <section className="bg-red-600 py-4">
+      <section className="bg-red-600 py-3 md:py-4">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between text-white text-sm">
-            <div className="flex items-center mb-2 md:mb-0">
-              <MapPin className="w-4 h-4 mr-2" />
-              6527 De la Côte-de-Liesse Rd, Montreal, Quebec H4T 1E5
-            </div>
-            <div className="flex items-center mb-2 md:mb-0">
-              <Phone className="w-4 h-4 mr-2" />
-              (438) 227-5550
+          <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 items-center justify-between text-white text-xs md:text-sm">
+            <div className="flex items-center">
+              <MapPin className="w-3 h-3 md:w-4 md:h-4 mr-2 flex-shrink-0" />
+              <span className="text-center md:text-left">6527 De la Côte-de-Liesse Rd, Montreal, QC</span>
             </div>
             <div className="flex items-center">
-              <Clock className="w-4 h-4 mr-2" />
-              Lun-Ven: 8h-17h | Sam-Dim: 8h-14h
+              <Phone className="w-3 h-3 md:w-4 md:h-4 mr-2" />
+              <span>(438) 227-5550</span>
+            </div>
+            <div className="flex items-center">
+              <Clock className="w-3 h-3 md:w-4 md:h-4 mr-2" />
+              <span>Lun-Ven: 8h-17h | Sam-Dim: 8h-14h</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-20 bg-gray-900">
+      <section id="services" className="py-12 md:py-20 bg-gray-900">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 md:mb-16">
             <Badge className="mb-4 bg-red-600 text-white">Nos Services</Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6 px-2">
               Service de Classe Mondiale pour les Plus Belles Voitures
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto px-4">
               De l'entretien de routine au réglage de précision, notre équipe d'experts s'assure que votre véhicule de
               luxe fonctionne à son apogée.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {[
               {
                 icon: <Wrench className="w-8 h-8" />,
@@ -242,21 +320,21 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-black">
+      <section id="about" className="py-12 md:py-20 bg-black">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <Badge className="mb-4 bg-red-600 text-white">Notre Histoire</Badge>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 md:mb-6">
                 Construit sur la Passion, Guidé par l'Excellence
               </h2>
-              <p className="text-gray-300 text-lg mb-6">
+              <p className="text-lg text-gray-300 mb-6">
                 Peak Performance Auto a commencé comme un petit garage avec une mission singulière : fournir le plus
                 haut niveau de service à chaque voiture qui franchit ses portes. Fondé par un père et son fils qui
                 partageaient une passion profonde pour les véhicules de performance, le garage a rapidement gagné une
                 réputation pour son expertise, sa précision et son dévouement.
               </p>
-              <p className="text-gray-300 text-lg mb-8">
+              <p className="text-lg text-gray-300 mb-8">
                 Aujourd'hui, cette même passion guide tout ce que nous faisons. Ce qui a commencé comme une opération
                 modeste est devenu une destination de premier plan pour les voitures de luxe et de haute performance.
               </p>
@@ -300,14 +378,14 @@ export default function HomePage() {
       </section>
 
       {/* Team Section */}
-      <section id="team" className="py-20 bg-gray-900">
+      <section id="team" className="py-12 md:py-20 bg-gray-900">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 md:mb-16">
             <Badge className="mb-4 bg-red-600 text-white">Notre Équipe</Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 md:mb-6">
               Rencontrez l'Équipe Derrière Peak Performance Auto
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto px-4">
               Chez Peak Performance Auto, notre équipe est l'épine dorsale de tout ce que nous faisons. Avec des
               décennies d'expérience combinée sur des véhicules de luxe et de performance haut de gamme.
             </p>
@@ -366,12 +444,14 @@ export default function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-black">
+      <section id="contact" className="py-12 md:py-20 bg-black">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 md:mb-16">
             <Badge className="mb-4 bg-red-600 text-white">Contactez-Nous</Badge>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Prêt à Optimiser Votre Véhicule?</h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 md:mb-6">
+              Prêt à Optimiser Votre Véhicule?
+            </h2>
+            <p className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto px-4">
               Que ce soit pour une urgence ou un entretien régulier, nous sommes là pour vous. Contactez-nous dès
               aujourd'hui pour prendre rendez-vous.
             </p>
