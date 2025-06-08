@@ -157,11 +157,13 @@ export default function HomePage() {
         {/* Video background - hidden on small mobile for performance */}
         <video
           ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover hidden sm:block"
+          className="absolute inset-0 w-full h-full object-cover"
           autoPlay
           muted
           loop
           playsInline
+          preload="metadata"
+          poster="/placeholder.svg?height=1080&width=1920&text=Peak+Performance+Auto"
           onError={(e) => {
             console.log("Video failed to load, using fallback background")
             e.currentTarget.style.display = "none"
