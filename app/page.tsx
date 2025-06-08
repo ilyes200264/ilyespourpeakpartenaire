@@ -100,8 +100,7 @@ export default function HomePage() {
             console.log("Video can play")
           }}
         >
-          <source src="/videos/peak-performance-bg.mov" type="video/mp4" />
-          <source src="/videos/peak-performance-bg.webm" type="video/webm" />
+          <source src="https://autosynchro.ca/wp-content/uploads/2024/07/as.mp4" type="video/mp4" />
           Votre navigateur ne supporte pas la lecture vidéo.
         </video>
 
